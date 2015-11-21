@@ -16,7 +16,7 @@ SRC = src
 OBJ = obj
 
 # main executables
-em64: $(OBJ)/em64.o
+$(BIN)/em64: $(OBJ)/em64.o
 	$(CC) $(LFLAGS) $(OBJ)/em64.o $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o -o $(BIN)/em64
 
 # objects
