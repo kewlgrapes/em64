@@ -47,6 +47,7 @@ typedef enum loc_code {
   WAR_UNKINST,
 
   // misc
+  DEB_LOGLEVEL,
   INF_TERMINATE
 } loc_code;
 
@@ -75,6 +76,7 @@ static const char *loc_messages[] = {
   "Unknown instruction format: 0x%08x",
 
   // misc
+  "Logging level set to %s",
   "Terminating..."
 };
 
