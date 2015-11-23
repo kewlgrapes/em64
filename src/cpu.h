@@ -19,8 +19,6 @@ uint64_t cpu_float_reg[32];
 uint64_t cpu_pc;
 uint32_t cpu_ir;
 
-// functions
-
 /*
 void cpu_init();
 
@@ -28,10 +26,26 @@ Initializes the program counter.
 */
 #define cpu_init() {cpu_pc = 0;}
 
+/*
+int cpu_bit_at(int_t n, int k)
+
+Return the kth bit a 64 bit integer. No bounds checking.
+*/
+#define cpu_bit_at(n, k) ((n) >> (k)) & 1
+
+/*
+int cpu_bit_range(int n, int l, int r)
+
+Return a bit range starting at position l and ending at position r.
+No bounds checking.
+*/
+#define cpu_bit_range(n,l,r) (((n) << (r)) >> (l))
+
 uint32_t cpu_fetch();
 uint64_t cpu_cycle();
 
 void cpu_snapshot();
+
 
 
 #endif
