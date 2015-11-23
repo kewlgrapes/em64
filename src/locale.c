@@ -37,7 +37,7 @@ void loc_error(loc_code lc, ...) {
   va_start(arg_ptr, lc);
   fprintf(stderr, "[%s] Fatal Error (%d): ", loc_prog_name, lc);
   vfprintf(stderr, loc_messages[lc], arg_ptr);
-  fputc('\n', stderr);
+  fprintf(stderr, "\n[%s] Aborting...\n", loc_prog_name);
   va_end(arg_ptr);
   exit(1);
 }
