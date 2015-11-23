@@ -18,6 +18,7 @@ OBJ = obj
 # main executables
 $(BIN)/em64: $(OBJ)/em64.o
 	$(CC) $(LFLAGS) $(OBJ)/em64.o $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o -o $(BIN)/em64
+	ln -fs bin/em64
 
 # objects
 $(OBJ)/em64.o: $(SRC)/em64.c $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o
@@ -48,3 +49,4 @@ $(OBJ)/rcp.o: $(SRC)/rcp.c $(SRC)/rcp.h
 clean:
 	rm obj/*.o
 	rm bin/em64
+	rm em64
