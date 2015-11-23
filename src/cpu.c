@@ -47,29 +47,20 @@ void cpu_snapshot() {
   /*
   Display a snapshot of the current CPU state.
   */
-  int i;
 
   // program counter
   printf("PC\t%08x/%08x\n",
-    *(uint32_t *)(&cpu_pc + sizeof(uint32_t)),
-    *(uint32_t *)&cpu_pc);
-
-  // instruction register
-  printf("IR\t         %08x\n", cpu_ir);
-
-  // for testing
-  for (i = 0; i < 32; i++) {
-    cpu_gen_reg[i] = 0x12345678;
-    cpu_float_reg[i] = 0x87654321;
-  }
+    (uint32_t )(cpu_pc >> 32),
+    (uint32_t )(cpu_pc & 0xFFFF));
 
   // general and floating point registers
-  for (i = 0; i < 32 * sizeof(uint64_t); i+=sizeof(uint64_t))
+  int i;
+  for (i = 0; i < 32; i++) 
     printf("GR%02x\t%08x/%08x\tFR%02x\t%08x/%08x\n",
-      i >> 3,
-      *(uint32_t *)(cpu_gen_reg + i + sizeof(uint32_t)),
-      *(uint32_t *)(cpu_gen_reg + i),
-      i << 3,
-      *(uint32_t *)(cpu_float_reg + i + sizeof(uint32_t)),
-      *(uint32_t *)(cpu_float_reg + i));
+      i,
+      (uint32_t)(cpu_gen_reg[i] >> 32),
+      (uint32_t)(cpu_gen_reg[i] & 0xFFFFFFFF),
+      i,
+      (uint32_t)(cpu_float_reg[i] >> 32),
+      (uint32_t)(cpu_float_reg[i] & 0xFFFFFFFF));
 }
