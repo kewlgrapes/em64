@@ -29,7 +29,8 @@ Initializes the program counter.
 /*
 int cpu_bit_at(int_t n, int k)
 
-Return the kth bit a 64 bit integer. No bounds checking.
+Return the kth bit of a 64 bit integer. Assumes that 0 is the least
+significant bit. No bounds checking.
 */
 #define cpu_bit_at(n, k) ((n) >> (k)) & 1
 
@@ -37,9 +38,9 @@ Return the kth bit a 64 bit integer. No bounds checking.
 int cpu_bit_range(int n, int l, int r)
 
 Return a bit range starting at position l and ending at position r.
-No bounds checking.
+Assumes that 0 is the least significant bit. No bounds checking.
 */
-#define cpu_bit_range(n,l,r) (((n) << (r)) >> (l))
+#define cpu_bit_range(n,l,r) (x >> r) & ~(~0 << (l-r+1))
 
 uint32_t cpu_fetch();
 uint64_t cpu_cycle();
