@@ -14,7 +14,14 @@ typedef enum loc_code {
   ERR_BADREAD,
 
   // memory access
-  ERR_MALLOC
+  ERR_MALLOC,
+
+  // endianness conversion
+  INF_BIGENDIAN,
+  INF_LITENDIAN,
+  INF_BYTESWAP,
+  INF_WORDSWAP,
+  ERR_UNKFMT
 } loc_code;
 
 // list of message text formats, mapped by loc_code enum
@@ -27,7 +34,14 @@ static const char *loc_messages[] = {
   "Failed to read from %s",
 
   // memory access
-  "Failed to allocate memory (%d allocated/%d requested)"
+  "Failed to allocate memory (%d allocated/%d requested)",
+
+  // endianness conversion
+  "ROM is in big endian format",
+  "Converting ROM to big endian format (from little endian)",
+  "Converting ROM to big endian format (from byte swapped)",
+  "Converting ROM to big endian format (from word swapped)",
+  "ROM is in an unknown format"
 };
 
 // logging/error reporting
