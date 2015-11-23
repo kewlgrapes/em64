@@ -18,7 +18,7 @@ long mem_read(char *file_name) {
 
   fd = fopen(file_name, "rb");
   if (fd)
-    printf("opened %s\n", file_name);
+    loc_info(INF_OPENED, file_name);
   else {
     loc_error(ERR_BADOPEN, file_name);
     return 0;
@@ -37,9 +37,9 @@ long mem_read(char *file_name) {
     }
   }
   else
-    printf("failed to allocate memory\n");
+    loc_error(ERR_MALLOC, 0, fsize);
     
   fclose(fd);
-  printf("closed %s\n", file_name);
+  loc_info(INF_CLOSED, file_name);
   return fsize;
 }

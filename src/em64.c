@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     loc_prog_name = argv[0];
 
   if (argc > 1)
-    printf("read %d bytes from %s\n", (int)mem_read(argv[1]), argv[1]);
+    loc_info(INF_READ, (int)mem_read(argv[1]), argv[1]);
   else
     loc_print_usage();
 

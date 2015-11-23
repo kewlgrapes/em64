@@ -7,6 +7,9 @@ char *loc_prog_name;
 // to encode messages for various errors
 typedef enum loc_code {
   // file access
+  INF_OPENED,
+  INF_CLOSED,
+  INF_READ,
   ERR_BADOPEN,
   ERR_BADREAD,
 
@@ -17,6 +20,9 @@ typedef enum loc_code {
 // list of message text formats, mapped by loc_code enum
 static const char *loc_messages[] = {
   // file access
+  "Opened %s",
+  "Closed %s",
+  "Read %ld bytes from %s",
   "Failed to open %s",
   "Failed to read from %s",
 
