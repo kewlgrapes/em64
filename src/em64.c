@@ -36,11 +36,7 @@ int main(int argc, char **argv) {
 
   // initialize cpu and read first 5 instructions
   cpu_init();
-  printf("0x%8x\n", cpu_fetch());
-  printf("0x%8x\n", cpu_fetch());
-  printf("0x%8x\n", cpu_fetch());
-  printf("0x%8x\n", cpu_fetch());
-  printf("0x%8x\n", cpu_fetch());
+  cpu_cycle();
 
   free(mem_rom);
   loc_log(LOC_INFO, INF_TERMINATE);

@@ -43,6 +43,9 @@ typedef enum loc_code {
   INF_CONVERTED,
   ERR_UNKFMT,
 
+  // cpu processing
+  WAR_UNKINST,
+
   // misc
   INF_TERMINATE
 } loc_code;
@@ -67,6 +70,9 @@ static const char *loc_messages[] = {
   "Converting ROM to big endian format (from word swapped)",
   "%ld instructions converted to big endian format",
   "ROM is in an unknown format",
+
+  // CPU processing
+  "Unknown instruction format: 0x%08x",
 
   // misc
   "Terminating..."
