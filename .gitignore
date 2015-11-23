@@ -2,3 +2,4 @@ bin/*
 obj/*
 roms/*
 em64
+em64test

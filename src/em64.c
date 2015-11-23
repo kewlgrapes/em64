@@ -21,9 +21,9 @@ int main(int argc, char **argv) {
 
   // initialize locale/logging settings
   if (argc)
-    loc_init(argv[0], LOC_DEBUG);
+    loc_init(argv[0], LOC_INFO);
   else
-    loc_init("em64", LOC_DEBUG);
+    loc_init("em64", LOC_INFO);
 
   // print usage message if invoked incorrectly
   if (argc < 2) {

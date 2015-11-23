@@ -16,14 +16,22 @@ SRC = src
 OBJ = obj
 
 # main executables
-$(BIN)/em64: $(OBJ)/em64.o
+em64: $(OBJ)/em64.o
 	$(CC) $(LFLAGS) $(OBJ)/em64.o $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o -o $(BIN)/em64
 	ln -fs bin/em64
 
-# objects
+em64test: $(OBJ)/em64test.o
+	$(CC) $(LFLAGS) $(OBJ)/em64test.o $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o -o $(BIN)/em64test
+	ln -fs bin/em64test
+
+# executable objects
 $(OBJ)/em64.o: $(SRC)/em64.c $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o
 	$(CC) $(CFLAGS) $(SRC)/em64.c -o $(OBJ)/em64.o
 
+$(OBJ)/em64test.o: $(SRC)/em64test.c $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o
+	$(CC) $(CFLAGS) $(SRC)/em64test.c -o $(OBJ)/em64test.o
+
+# core objects
 $(OBJ)/cpu.o: $(SRC)/cpu.c $(SRC)/cpu.h
 	$(CC) $(CFLAGS) $(SRC)/cpu.c -o $(OBJ)/cpu.o
 
@@ -47,6 +55,9 @@ $(OBJ)/rcp.o: $(SRC)/rcp.c $(SRC)/rcp.h
 
 # clean
 clean:
-	rm obj/*.o
-	rm bin/em64
-	rm em64
+	rm obj/*.o -f
+	rm bin/em64 -f
+	rm em64 -f
+	rm bin/em64test -f
+	rm em64test -f
+
