@@ -21,6 +21,7 @@ typedef enum loc_code {
   INF_LITENDIAN,
   INF_BYTESWAP,
   INF_WORDSWAP,
+  INF_CONVERTED,
   ERR_UNKFMT
 } loc_code;
 
@@ -41,6 +42,7 @@ static const char *loc_messages[] = {
   "Converting ROM to big endian format (from little endian)",
   "Converting ROM to big endian format (from byte swapped)",
   "Converting ROM to big endian format (from word swapped)",
+  "%ld bytes converted to big endian format",
   "ROM is in an unknown format"
 };
 
