@@ -17,6 +17,6 @@ static char *mem_rom;
 static long mem_rom_size;
 
 long mem_read(char *file_name);
-void fix_endianness();
+long fix_endianness();
 
 #endif
