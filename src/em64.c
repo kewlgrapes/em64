@@ -34,9 +34,10 @@ int main(int argc, char **argv) {
   // read program into memory
   mem_read(argv[1]);
 
-  // initialize cpu and read first 5 instructions
+  // initialize cpu and read some instructions
   cpu_init();
   cpu_cycle();
+  cpu_snapshot();
 
   free(mem_rom);
   loc_log(LOC_INFO, INF_TERMINATE);

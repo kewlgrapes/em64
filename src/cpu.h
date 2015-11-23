@@ -31,5 +31,7 @@ Initializes the program counter.
 uint32_t cpu_fetch();
 uint64_t cpu_cycle();
 
+void cpu_snapshot();
+
 
 #endif
