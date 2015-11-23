@@ -9,6 +9,8 @@
 #include "locale.h"
 #include "memory.h"
 
+void fix_endianness();
+
 long mem_read(char *file_name) {
   /*
   Read an entire ROM file into memory. Returns the number of bytes read.
@@ -18,9 +20,9 @@ long mem_read(char *file_name) {
 
   fd = fopen(file_name, "rb");
   if (fd)
-    loc_info(INF_OPENED, file_name);
+    loc_log(LOC_INFO, INF_OPENED, file_name);
   else {
-    loc_error(ERR_BADOPEN, file_name);
+    loc_fatal(ERR_BADOPEN, file_name);
     return 0;
   }
 
@@ -28,27 +30,29 @@ long mem_read(char *file_name) {
   fseek(fd, 0, SEEK_END);
   fsize = ftell(fd);
 
-  // allocate memory and read the entire file
+  // allocate memory and read in the entire file
   mem_rom = (char *)malloc(fsize);
   if (mem_rom) {
     fseek(fd, 0, SEEK_SET);
-    if (!fread(mem_rom, fsize, 1, fd)) {
-      
-    }
+    if (!fread(mem_rom, fsize, 1, fd))
+      loc_fatal(ERR_BADREAD, file_name);
+    mem_rom_size = fsize;
+    loc_log(LOC_INFO, INF_READ, fsize, file_name);
   }
   else
-    loc_error(ERR_MALLOC, 0, fsize);
-    
+    loc_fatal(ERR_MALLOC, 0, fsize);
   fclose(fd);
-  loc_info(INF_CLOSED, file_name);
-  mem_rom_size = fsize;
+  loc_log(LOC_INFO, INF_CLOSED, file_name);
+
+  // convert to big endian format
+  fix_endianness();
   return fsize;
 }
 
-long fix_endianness() {
+void fix_endianness() {
   /*
   Reorders the bytes of the ROM into big endian format. Assumes the ROM
-  has already been read into memory (pointed to by *mem_rom). Returns
+  has already been read into memory and is pointed to by *mem_rom. Returns
   the number of bytes converted.
   */
   long i;
@@ -63,7 +67,7 @@ long fix_endianness() {
 
     // 0x40123780:
     case MEM_LIT_ENDIAN:
-      loc_info(INF_LITENDIAN); 
+      loc_log(LOC_DEBUG, INF_LITENDIAN); 
       for (i = 0; i < mem_rom_size; i += 4) {
         *(cur_word+0) ^= *(cur_word+3);
         *(cur_word+3) = *(cur_word+0) ^ *(cur_word+3);
@@ -77,7 +81,7 @@ long fix_endianness() {
     
     // 0x37804012
     case MEM_BYTE_SWAPPED:
-      loc_info(INF_BYTESWAP); 
+      loc_log(LOC_DEBUG, INF_BYTESWAP); 
       for (i = 0; i < mem_rom_size; i += 4) {
         *(cur_word+0) ^= *(cur_word+1);
         *(cur_word+1) = *(cur_word+0) ^ *(cur_word+1);
@@ -91,7 +95,7 @@ long fix_endianness() {
 
     // 0x12408037
     case MEM_WORD_SWAPPED:
-      loc_info(INF_WORDSWAP); 
+      loc_log(LOC_DEBUG, INF_WORDSWAP); 
       for (i = 0; i < mem_rom_size; i += 4) {
         *(cur_word+0) ^= *(cur_word+2);
         *(cur_word+2) = *(cur_word+0) ^ *(cur_word+2);
@@ -103,7 +107,7 @@ long fix_endianness() {
       } while (i < mem_rom_size);
       break;
     default:
-      loc_error(ERR_UNKFMT);
+      loc_fatal(ERR_UNKFMT);
   }
-  loc_info(INF_CONVERTED, i);
+  loc_log(LOC_DEBUG, INF_CONVERTED, i >> 2);
 }
