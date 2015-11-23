@@ -50,6 +50,36 @@ void fix_endianness() {
   Reorders the bytes of the ROM into big endian format. Assumes the ROM
   has already been read into memory (pointed to by *mem_rom);
   */
-  uint32_t *cur_word = (uint32_t *)mem_rom;
-  printf("0x%08x\n", *cur_word);
+  long i;
+  uint32_t *first_word = (uint32_t *)mem_rom;
+  char *cur_word = (char *)mem_rom;
+
+
+  switch(*first_word) {
+    case MEM_BIG_ENDIAN: // 0x80371240
+      break;
+    case MEM_LIT_ENDIAN: // 0x40123780:
+      loc_info(INF_LITENDIAN); 
+      break;
+    case MEM_BYTE_SWAPPED: // 0x37804012
+      loc_info(INF_BYTESWAP); 
+      break;
+    case MEM_WORD_SWAPPED: // 0x12408037
+      loc_info(INF_WORDSWAP); 
+      for (i = 0; i < mem_rom_size; i += 4) {
+        printf("%x\n", *(uint32_t *)cur_word);
+        *(cur_word+0) ^= *(cur_word+3);
+        *(cur_word+3) = *(cur_word+0) ^ *(cur_word+3);
+        *(cur_word+0) ^= *(cur_word+3);
+        *(cur_word+1) ^= *(cur_word+2);
+        *(cur_word+2) = *(cur_word+1) ^ *(cur_word+2);
+        *(cur_word+1) ^= *(cur_word+2);
+        printf("%x\n", *(uint32_t *)cur_word);
+        cur_word += 4;
+        return;
+      } while (i < mem_rom_size);
+      break;
+    default:
+      loc_error(ERR_UNKFMT);
+  }
 }

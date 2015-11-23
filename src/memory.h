@@ -14,8 +14,9 @@
 
 // pointer to the ROM stored in memory
 static char *mem_rom;
-static char mem_rom_size;
+static long mem_rom_size;
 
 long mem_read(char *file_name);
+void fix_endianness();
 
 #endif
