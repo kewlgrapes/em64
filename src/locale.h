@@ -2,7 +2,25 @@
 //  Nick Becker
 //  19 November, 2015
 
+// program invocation name
 char *loc_prog_name;
+
+// logging levels
+typedef enum loc_level {
+  LOC_DEBUG,
+  LOC_INFO,
+  LOC_WARNING,
+  LOC_ERROR
+} loc_level;
+
+static const char *LOC_LEVEL[] = {
+  "DEBUG",
+  "INFO",
+  "WARNING",
+  "FATAL ERROR"
+};
+
+loc_level loc_logging_level;
 
 // to encode messages for various errors
 typedef enum loc_code {
@@ -15,6 +33,7 @@ typedef enum loc_code {
 
   // memory access
   ERR_MALLOC,
+  ERR_BOUNDS,
 
   // endianness conversion
   INF_BIGENDIAN,
@@ -22,7 +41,10 @@ typedef enum loc_code {
   INF_BYTESWAP,
   INF_WORDSWAP,
   INF_CONVERTED,
-  ERR_UNKFMT
+  ERR_UNKFMT,
+
+  // misc
+  INF_TERMINATE
 } loc_code;
 
 // list of message text formats, mapped by loc_code enum
@@ -36,20 +58,26 @@ static const char *loc_messages[] = {
 
   // memory access
   "Failed to allocate memory (%d allocated/%d requested)",
+  "Attempted to fetch memory past bounds (%d requested/%d total)",
 
   // endianness conversion
   "ROM is in big endian format",
   "Converting ROM to big endian format (from little endian)",
   "Converting ROM to big endian format (from byte swapped)",
   "Converting ROM to big endian format (from word swapped)",
-  "%ld bytes converted to big endian format",
-  "ROM is in an unknown format"
+  "%ld instructions converted to big endian format",
+  "ROM is in an unknown format",
+
+  // misc
+  "Terminating..."
 };
 
+// initialization
+void loc_init(char *pn, loc_level lc);
+
 // logging/error reporting
-void loc_info(loc_code lc, ...);
-void loc_warning(loc_code lc, ...);
-void loc_error(loc_code lc, ...);
+void loc_log(loc_level ll, loc_code lc, ...);
+void loc_fatal(loc_code lc, ...);
 
 // other stuff
 void loc_print_usage();

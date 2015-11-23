@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cpu.h"
 #include "fpu.h"
@@ -17,16 +18,32 @@ int main(int argc, char **argv) {
   /*
   Main entry point for program.
   */
-  // record the program's invocation name
-  if (argc)
-    loc_prog_name = argv[0];
 
+  // initialize locale/logging settings
+  if (argc)
+    loc_init(argv[0], LOC_DEBUG);
+  else
+    loc_init("em64", LOC_DEBUG);
+
+  // print usage message if invoked incorrectly
   if (argc < 2) {
     loc_print_usage();
     return 1;
   }
-  loc_info(INF_READ, (int)mem_read(argv[1]), argv[1]);
-  fix_endianness();
+
+  // read program into memory
+  mem_read(argv[1]);
+
+  // initialize cpu and read first 5 instructions
+  cpu_init();
+  printf("0x%8x\n", cpu_fetch());
+  printf("0x%8x\n", cpu_fetch());
+  printf("0x%8x\n", cpu_fetch());
+  printf("0x%8x\n", cpu_fetch());
+  printf("0x%8x\n", cpu_fetch());
+
+  free(mem_rom);
+  loc_log(LOC_INFO, INF_TERMINATE);
 
   return 0;
 }

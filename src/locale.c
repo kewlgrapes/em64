@@ -10,35 +10,33 @@
 
 #include "locale.h"
 
+void loc_init(char *pn, loc_level ll) {
+  loc_prog_name = pn;
+  loc_logging_level = ll;
+}
+
 ///////////////////////////////////////////////////////////
 // error reporting
 ///////////////////////////////////////////////////////////
 
-void loc_info(loc_code lc, ...) {
+void loc_log(loc_level ll, loc_code lc, ...) {
   va_list arg_ptr;
-  va_start(arg_ptr, lc);
-  fprintf(stderr, "[%s] Info (%d): ", loc_prog_name, lc);
-  vfprintf(stderr, loc_messages[lc], arg_ptr);
-  fputc('\n', stderr);
-  va_end(arg_ptr);
+  if (ll >= loc_logging_level) {
+    va_start(arg_ptr, lc);
+    fprintf(stdout, "[%s] %s: ", loc_prog_name, LOC_LEVEL[ll]);
+    vfprintf(stdout, loc_messages[lc], arg_ptr);
+    fputc('\n', stdout);
+    va_end(arg_ptr);
+  }
 }
 
-void loc_warning(loc_code lc, ...) {
+void loc_fatal(loc_code lc, ...) {
   va_list arg_ptr;
   va_start(arg_ptr, lc);
-  fprintf(stderr, "[%s] Warning (%d): ", loc_prog_name, lc);
+  fprintf(stderr, "[%s] %s (%d): ", loc_prog_name, LOC_LEVEL[LOC_ERROR], lc);
   vfprintf(stderr, loc_messages[lc], arg_ptr);
-  fputc('\n', stderr);
   va_end(arg_ptr);
-}
-
-void loc_error(loc_code lc, ...) {
-  va_list arg_ptr;
-  va_start(arg_ptr, lc);
-  fprintf(stderr, "[%s] Fatal Error (%d): ", loc_prog_name, lc);
-  vfprintf(stderr, loc_messages[lc], arg_ptr);
-  fprintf(stderr, "\n[%s] Aborting...\n", loc_prog_name);
-  va_end(arg_ptr);
+  fprintf(stderr, "\n[%s] %s\n", loc_prog_name, loc_messages[INF_TERMINATE]);
   exit(1);
 }
 
