@@ -65,15 +65,12 @@ long fix_endianness() {
     case MEM_LIT_ENDIAN:
       loc_info(INF_LITENDIAN); 
       for (i = 0; i < mem_rom_size; i += 4) {
-        printf("%x\n", *(uint32_t *)cur_word);
         *(cur_word+0) ^= *(cur_word+3);
         *(cur_word+3) = *(cur_word+0) ^ *(cur_word+3);
         *(cur_word+0) ^= *(cur_word+3);
         *(cur_word+1) ^= *(cur_word+2);
         *(cur_word+2) = *(cur_word+1) ^ *(cur_word+2);
         *(cur_word+1) ^= *(cur_word+2);
-        printf("%x\n", *(uint32_t *)cur_word);
-        return;
         cur_word += 4;
       } while (i < mem_rom_size);
       break;
@@ -82,14 +79,12 @@ long fix_endianness() {
     case MEM_BYTE_SWAPPED:
       loc_info(INF_BYTESWAP); 
       for (i = 0; i < mem_rom_size; i += 4) {
-        printf("%x\n", *(uint32_t *)cur_word);
         *(cur_word+0) ^= *(cur_word+1);
         *(cur_word+1) = *(cur_word+0) ^ *(cur_word+1);
         *(cur_word+0) ^= *(cur_word+1);
         *(cur_word+2) ^= *(cur_word+3);
         *(cur_word+3) = *(cur_word+2) ^ *(cur_word+3);
         *(cur_word+2) ^= *(cur_word+3);
-        printf("%x\n", *(uint32_t *)cur_word);
         cur_word += 4;
       } while (i < mem_rom_size);
       break;
