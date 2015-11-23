@@ -41,5 +41,15 @@ long mem_read(char *file_name) {
     
   fclose(fd);
   loc_info(INF_CLOSED, file_name);
+  mem_rom_size = fsize;
   return fsize;
+}
+
+void fix_endianness() {
+  /*
+  Reorders the bytes of the ROM into big endian format. Assumes the ROM
+  has already been read into memory (pointed to by *mem_rom);
+  */
+  uint32_t *cur_word = (uint32_t *)mem_rom;
+  printf("0x%08x\n", *cur_word);
 }

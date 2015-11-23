@@ -21,10 +21,12 @@ int main(int argc, char **argv) {
   if (argc)
     loc_prog_name = argv[0];
 
-  if (argc > 1)
-    loc_info(INF_READ, (int)mem_read(argv[1]), argv[1]);
-  else
+  if (argc < 2) {
     loc_print_usage();
+    return 1;
+  }
+  loc_info(INF_READ, (int)mem_read(argv[1]), argv[1]);
+  fix_endianness();
 
   return 0;
 }
