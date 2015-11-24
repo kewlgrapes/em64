@@ -28,7 +28,7 @@ em64test: $(OBJ)/em64test.o
 $(OBJ)/em64.o: $(SRC)/em64.c $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o
 	$(CC) $(CFLAGS) $(SRC)/em64.c -o $(OBJ)/em64.o
 
-$(OBJ)/em64test.o: $(SRC)/em64test.c $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o
+$(OBJ)/em64test.o: $(SRC)/em64test.c $(SRC)/em64test.h $(OBJ)/cpu.o $(OBJ)/fpu.o $(OBJ)/graphics.o $(OBJ)/locale.o $(OBJ)/memory.o $(OBJ)/mmu.o $(OBJ)/rcp.o
 	$(CC) $(CFLAGS) $(SRC)/em64test.c -o $(OBJ)/em64test.o
 
 # core objects
