@@ -40,13 +40,11 @@ int cpu_bit_range(int n, int l, int r)
 Return a bit range starting at position l and ending at position r.
 Assumes that 0 is the least significant bit. No bounds checking.
 */
-#define cpu_bit_range(n,l,r) (x >> r) & ~(~0 << (l-r+1))
+#define cpu_bit_range(n,l,r) (((n) >> (r)) & ~(0xFFFFFFFFFFFFFFFF << ((l) - (r) + 1)))
 
 uint32_t cpu_fetch();
 uint64_t cpu_cycle();
 
 void cpu_snapshot();
-
-
 
 #endif
