@@ -29,7 +29,7 @@ long mem_read(char *file_name) {
   fsize = ftell(fd);
 
   // allocate memory and read in the entire file
-  mem_rom = (uint32_t *)malloc(fsize);
+  mem_rom = (uint8_t *)malloc(fsize);
   if (mem_rom) {
     fseek(fd, 0, SEEK_SET);
     if (!fread(mem_rom, fsize, 1, fd))
@@ -48,16 +48,17 @@ long mem_read(char *file_name) {
   return fsize;
 }
 
-long mem_fix_endianness(uint32_t *rom, long rom_len) {
+long mem_fix_endianness(uint8_t *rom, long rom_len) {
   /*
   Reorders the bytes of the ROM into big endian format. Returns the number
   of bytes converted.
   */
   long i;
-  char *cur_word = (char *)rom;
+  uint32_t *first_word = (uint32_t *)rom;
+  uint8_t *cur_word = rom;
 
   // check the first word in the rom
-  switch(*rom) {
+  switch(*first_word) {
     // 0x80371240
     case MEM_BIG_ENDIAN:
       i = 0;

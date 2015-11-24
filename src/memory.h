@@ -13,11 +13,11 @@
 #define MEM_WORD_SWAPPED 0x12408037
 
 // pointer to the ROM stored in memory
-uint32_t *mem_rom;
+uint8_t *mem_rom;
 long mem_rom_len;
 
 // functions
 long mem_read(char *file_name);
-long mem_fix_endianness(uint32_t *rom, long rom_len);
+long mem_fix_endianness(uint8_t *rom, long rom_len);
 
 #endif
