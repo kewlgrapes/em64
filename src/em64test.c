@@ -23,17 +23,49 @@ int main(int argc, char **argv) {
   /*
   Main entry point for program.
   */
+  loc_init(LOC_ERROR, argv[0]);
+
+  // memory tests
+  tst_fix_endianness();
 
   // cpu tests
   tst_bit_at();
   tst_bit_range();
+  tst_cpu_fetch();
 
+  // great job
   return 0;
 }
 
+///////////////////////////////////////////////////////////
+// memory tests
+///////////////////////////////////////////////////////////
+
+void tst_fix_endianness() {
+  /*
+  Test mem_fix_endianness() from memory.c.
+  */
+  uint32_t rom[TST_ROM_LEN];
+
+  int i, j;
+  for (j = 0; j < TST_ROM_CNT; j++) {
+    for (i = 0; i < TST_ROM_LEN; i++)
+      rom[i] = TST_ROM[j][i];
+    mem_fix_endianness((uint8_t *)rom, TST_ROM_LEN * sizeof(uint32_t));
+
+    // ensure the ROM was converted to big endian format
+    for (i = 0; i < TST_ROM_LEN; i++)
+      assert(rom[i] == TST_ROM[0][i]);
+  }
+}
+
+///////////////////////////////////////////////////////////
+// cpu tests
+///////////////////////////////////////////////////////////
+
 void tst_bit_at() {
   /*
-  Tests cpu_bit_at() from cpu.h.
+  Test cpu_bit_at() from cpu.h.
   */
   uint16_t n0 = 0xFFFF;
   uint32_t n1 = 0xFFFFFFFF;
@@ -57,6 +89,9 @@ void tst_bit_at() {
 }
 
 void tst_bit_range() {
+  /*
+  Test cpu_bit_range() from cpu.h.
+  */
   uint16_t n0 = 0xFB95;
   uint32_t n1 = 0x13579BDF;
   uint64_t n2 = 0xFEDCBA9876543210;
@@ -84,4 +119,23 @@ void tst_bit_range() {
     assert(cpu_bit_range(n2, 63 - i, 0) == (n2 & (0xFFFFFFFFFFFFFFFF >> i)));
   }
   
+}
+
+void tst_cpu_fetch() {
+  /*
+  Tests cpu_fetch() from cpu.c.
+  */
+  int i, j;
+
+  mem_rom_len = TST_ROM_LEN * sizeof(uint32_t);
+  for (j = 0; j < TST_ROM_CNT; j++) {
+    mem_rom = (uint8_t *)TST_ROM[j];
+    cpu_init();
+    assert(cpu_pc == 0);
+    for(i = 0; i < TST_ROM_LEN; i++) {
+      assert(cpu_fetch() == TST_ROM[j][i]);
+      assert(cpu_ir == TST_ROM[j][i]);
+      assert(cpu_pc == (i * sizeof(uint32_t) + sizeof(uint32_t)));
+    }
+  }
 }
