@@ -11,7 +11,7 @@
 #define CPU_OP_SPECIAL 0x00 
 #define CPU_OP_REGIMM  0x01
 #define CPU_OP_COP0    0x10
-#define CPU_OP_COP1     0x11
+#define CPU_OP_COP1    0x11
 
 // registers
 uint64_t cpu_gen_reg[32];

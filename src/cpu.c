@@ -53,6 +53,9 @@ void cpu_snapshot() {
     (uint32_t )(cpu_pc >> 32),
     (uint32_t )(cpu_pc & 0xFFFF));
 
+  // instruction register
+  printf("IR\t         %08x\n", cpu_ir);
+
   // general and floating point registers
   int i;
   for (i = 0; i < 32; i++) 
