@@ -32,7 +32,7 @@ int cpu_bit_at(int_t n, int k)
 Return the kth bit of a 64 bit integer. Assumes that 0 is the least
 significant bit. No bounds checking.
 */
-#define cpu_bit_at(n, k) ((n) >> (k)) & 1
+#define cpu_bit_at(n, k) ((n) >> (k) & 1)
 
 /*
 int cpu_bit_range(int n, int l, int r)
