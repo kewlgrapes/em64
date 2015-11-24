@@ -81,7 +81,7 @@ static const char *loc_messages[] = {
 };
 
 // initialization
-void loc_init(char *pn, loc_level lc);
+void loc_init(loc_level lc, char *pn);
 
 // logging/error reporting
 void loc_log(loc_level ll, loc_code lc, ...);

@@ -10,9 +10,9 @@
 
 #include "locale.h"
 
-void loc_init(char *pn, loc_level ll) {
-  loc_prog_name = pn;
+void loc_init(loc_level ll, char *pn) {
   loc_logging_level = ll;
+  loc_prog_name = pn;
   loc_log(LOC_INFO, DEB_LOGLEVEL, LOC_LEVEL[ll]);
 }
 
